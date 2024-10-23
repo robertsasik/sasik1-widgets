@@ -1,1 +1,6 @@
 streamlit
+sqlalchemy
+os
+psycopg2
+geopandas
+dotenv
