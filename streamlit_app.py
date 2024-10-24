@@ -44,7 +44,16 @@ gdf
 
 m = folium.Map(location=[48.14816, 17.10674], zoom_start=8) 
 
-folium.GeoJson(gdf).add_to(m)
+def style_function(feature):
+    return {
+        'fillColor': '#3186cc',  # Farba výplne polygónov
+        'color': 'black',        # Farba hrán polygónov
+        'weight': 2,             # Hrúbka hrán
+        'fillOpacity': 0.6,      # Priehľadnosť výplne (0-1)
+    }
 
+# Pridanie GeoDataFrame vrstvy na mapu so zvoleným štýlom
+folium.GeoJson(gdf, style_function=style_function).add_to(m)
+
+# Zobrazenie interaktívnej mapy v Streamlit
 st_folium(m, width=800, height=600)
-
