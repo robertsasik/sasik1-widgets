@@ -4,5 +4,4 @@ folium
 streamlit_folium
 psycopg2
 geopandas
-dotenv
 matplotlib
