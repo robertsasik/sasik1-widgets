@@ -43,7 +43,7 @@ gdf
 gdf = gdf.to_crs(epsg=4326)
 
 #Vytvorenie interaktívnej mapy pomocou knižnice folium do objektu m
-m = folium.Map(location=[48.14816, 17.10674], zoom_start=8) 
+m = folium.Map(location=[48.705, 19.16], zoom_start=0) 
 
 #Definícia štýlu vykreslenia polygónovej vrstvy
 def style_function(feature):
