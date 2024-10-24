@@ -8,18 +8,12 @@ from streamlit_folium import st_folium
 
 
 
-st.title("🎈 My new app")
+st.title("🗺️Interaktivna mapa okresov🌍")
 st.write(
-    "Let's start building! For help and inspiration, head over to [docs.streamlit.io](https://docs.streamlit.io/)."
+    "Interaktívna mapa okresov SR pomocou frameworku streamlite a knižnice folium."
 )
 
-user = st.secrets["p_user"]
-db_password = st.secrets["p_password"]
-
-
-
-st.write(f"DB Username: {user}")
-
+#Vytvorenie skrytých premenných na pripojenie do databázy
 host = st.secrets["p_host"]
 port = st.secrets["p_port"]
 database = st.secrets["p_database"]
@@ -27,23 +21,31 @@ user = st.secrets["p_user"]
 password = st.secrets["p_password"]
 st.write(f"DB Username: {user}")
 
-@st.cache_resource
+@st.cache_resource #dekorátor pripojenia na databázové zdroje
+
+#Vytvorenie funkcie na pripojenie na databázu
 def get_db_connection():
     db_connection_url = f"postgresql://{user}:{password}@{host}:{port}/{database}"
     engine = create_engine(db_connection_url) 
     return engine
 
+#Volanie funkcie pomocou premennej con
 con = get_db_connection()
-sql = "SELECT * FROM hranice_okresy_1"
-#sql = st.text_input("Zadaj SQL skript: ")
 
+#SQL dopyt pomocou premennej sql
+sql = "SELECT * FROM hranice_okresy_1"
+
+#Pužitie geopandas na volanie relačnej tabuľky z PostgreSQL+Postgis databázy
 gdf = gpd.read_postgis(sql, con, geom_col='geom', crs = 5514)
 gdf
 
-#gdf = gdf.to_crs(epsg=4326)
+#Konverzia súradnicového systému S-JTSK na WGS-84 pomocou geopandas
+gdf = gdf.to_crs(epsg=4326)
 
+#Vytvorenie interaktívnej mapy pomocou knižnice folium do objektu m
 m = folium.Map(location=[48.14816, 17.10674], zoom_start=8) 
 
+#Definícia štýlu vykreslenia polygónovej vrstvy
 def style_function(feature):
     return {
         'fillColor': '#3186cc',  # Farba výplne polygónov
